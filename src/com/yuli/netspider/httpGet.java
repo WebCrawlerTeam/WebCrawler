@@ -46,7 +46,7 @@ public class httpGet {
              * System.out.println("----------------------------------------");
 			 * 
 			 */
-			parsePage.parseFromString(responseBody, conn);
+			parsePage.parseFromString(responseBody, conn, url);
 		}catch(Exception e) {
 			e.printStackTrace();
 		}finally {

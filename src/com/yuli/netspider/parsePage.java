@@ -14,11 +14,24 @@ import org.htmlparser.util.ParserException;
 
 
 public class parsePage {
-	public static void parseFromString(String content, Connection conn) throws Exception {
+	public static void parseFromString(String content, Connection conn, String url) throws Exception {
 		Parser parser = new Parser(content);
 		HasAttributeFilter filter = new HasAttributeFilter("href");
 		
 		try{
+			String sql = null;
+			ResultSet rs = null;
+			PreparedStatement pstmt = null;
+			Statement stmt = null;
+			//将页面的内容存入数据库
+			try {
+				sql = "INSERT INTO webcontent (URL2, webContent) VALUES ('"+url+"', '"+content+"')";
+				pstmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+				pstmt.execute();
+			}catch(Exception e) {
+				e.printStackTrace();
+			}
+			
 			NodeList list = parser.parse(filter);
 			int count = list.size();
 			
@@ -29,20 +42,18 @@ public class parsePage {
 					LinkTag link = (LinkTag)node;
 					String nextlink = link.extractLink();
 					String mainurl = utils.URLS;
-					String wpurl = mainurl + "wp-content/";
+				//	String wpurl = mainurl + "wp-content/";
 					
 					//仅仅保存页面从mainurl
-					if(nextlink.startsWith(mainurl)) {
-						String sql = null;
-						ResultSet rs = null;
-						PreparedStatement pstmt = null;
-						Statement stmt = null;
+					//nextlink.startsWith(mainurl)
+					if(true) {
+						
 						String tag = null;
 						
 						//不保存任何来自“wp-content”的页面
-						if(nextlink.startsWith(wpurl)) {
-							continue;
-						}
+//						if(nextlink.startsWith(wpurl)) {
+//							continue;
+//						}
 						
 						try{
 							//检查连接是否已经存在数据库中
@@ -60,19 +71,19 @@ public class parsePage {
 								System.out.println(nextlink);
 								
 								//使用子字符创来更好的解析
-								nextlink = nextlink.substring(mainurl.length());
-								//System.out.println(nextlink);
-								
-								if(nextlink.startsWith("tag/")) {
-									tag = nextlink.substring(4, nextlink.length()-1);
-									
-									//中文转为UTF-8编码
-									tag = URLDecoder.decode(tag, "UTF-8");
-									sql = "INSERT INTO tags (tagname) VALUES ('" + tag + "')";
-									pstmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-									//如果link互不相同，则tag一定不同
-									pstmt.execute();
-								}
+//								nextlink = nextlink.substring(mainurl.length());
+//								//System.out.println(nextlink);
+//								
+//								if(nextlink.startsWith("tag/")) {
+//									tag = nextlink.substring(4, nextlink.length()-1);
+//									
+//									//中文转为UTF-8编码
+//									tag = URLDecoder.decode(tag, "UTF-8");
+//									sql = "INSERT INTO tags (tagname) VALUES ('" + tag + "')";
+//									pstmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+//									//如果link互不相同，则tag一定不同
+//									pstmt.execute();
+//								}
 								
 							}
 						}catch(Exception e) {

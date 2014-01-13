@@ -53,6 +53,10 @@ public class mainPro {
 				stmt = conn.createStatement();
 				stmt.executeUpdate(sql);
 				
+				sql = "create table if not exists webcontent (contentID int(5) not null auto_increment, URL2 text not null, webContent text, primary key (contentID)) engine=InnoDB DEFAULT CHARSET=utf8";
+				stmt = conn.createStatement();
+				stmt.executeUpdate(sql);
+				
 				sql = "create table if not exists tags (tagnum int(4) not null auto_increment, tagname text not null, primary key (tagnum)) engine=InnoDB DEFAULT CHARSET=utf8";
 				stmt = conn.createStatement();
 				stmt.executeUpdate(sql);
