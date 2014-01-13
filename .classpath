@@ -2,11 +2,11 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.7"/>
-	<classpathentry kind="lib" path="/home/yuli/文档/工具包/lib/httpclient-4.3.1.jar"/>
-	<classpathentry kind="lib" path="/home/yuli/文档/工具包/HTMLParser-2.0-SNAPSHOT/lib/htmlparser.jar"/>
-	<classpathentry kind="lib" path="/home/yuli/文档/工具包/mysql-connector-java-5.1.22-bin.jar"/>
-	<classpathentry kind="lib" path="/home/yuli/文档/工具包/lib/httpcore-4.3.jar"/>
-	<classpathentry kind="lib" path="/home/yuli/文档/工具包/lib/commons-logging-1.1.3.jar"/>
-	<classpathentry kind="lib" path="/home/yuli/文档/工具包/HTMLParser-2.0-SNAPSHOT/lib/htmllexer.jar"/>
+	<classpathentry kind="lib" path="D:/学习/JAVA/WebCrawler/lib/commons-logging-1.1.3.jar"/>
+	<classpathentry kind="lib" path="D:/学习/JAVA/WebCrawler/lib/htmllexer.jar"/>
+	<classpathentry kind="lib" path="D:/学习/JAVA/WebCrawler/lib/htmlparser.jar"/>
+	<classpathentry kind="lib" path="D:/学习/JAVA/WebCrawler/lib/httpclient-4.3.1.jar"/>
+	<classpathentry kind="lib" path="D:/学习/JAVA/WebCrawler/lib/httpcore-4.3.jar"/>
+	<classpathentry kind="lib" path="D:/学习/JAVA/WebCrawler/lib/mysql-connector-java-5.1.22-bin.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
