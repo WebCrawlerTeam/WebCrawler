@@ -24,21 +24,7 @@ public class parsePage {
 			ResultSet rs = null;
 			PreparedStatement pstmt = null;
 			Statement stmt = null;
-			//将页面的内容存入数据库
-			try {
-				
-				String temp = getpagecontent.getText(url);
-				String temp2 = getpagecontent.getTitle(url);
-			//	temp = URLDecoder.decode(temp, "UTF-8");
-				sql = "INSERT INTO webcontent (URL2, webTitle, webContent) VALUES ('"+url+"', '"+temp2+"', '"+temp+"')";
-				pstmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-				pstmt.execute();
-//				sql = "INSERT INTO webcontent (URL2, webContent) VALUES ('"+url+"', '"+temp+"')";
-//				pstmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-//				pstmt.execute();
-			}catch(Exception e) {
-				e.printStackTrace();
-			}
+			
 			
 			NodeList list = parser.parse(filter);
 			int count = list.size();
@@ -77,6 +63,21 @@ public class parsePage {
 								pstmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 								pstmt.execute();
 								System.out.println(nextlink);
+								
+								//将页面的内容存入数据库
+								try {
+									
+									String temp = getpagecontent.getText(nextlink);
+									String temp2 = getpagecontent.getTitle(nextlink);
+								//	temp = URLDecoder.decode(temp, "UTF-8");
+									sql = "INSERT INTO webcontent (URL2, webTitle, webContent) VALUES ('"+nextlink+"', '"+temp2+"', '"+temp+"')";
+//									pstmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+//									pstmt.execute();
+									stmt.executeUpdate(sql);
+									
+								}catch(Exception e) {
+									e.printStackTrace();
+								}
 								
 								//使用子字符创来更好的解析
 //								nextlink = nextlink.substring(mainurl.length());

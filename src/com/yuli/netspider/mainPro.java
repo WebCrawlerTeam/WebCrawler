@@ -34,7 +34,8 @@ public class mainPro {
 		
 		//创建数据库，完成初始化
 		String sql = null;
-        String url = frontpage;
+//        String url = frontpage;
+		String url = torrentLink.getTorrent();
         Statement stmt = null;
         PreparedStatement pstmt = null;
         ResultSet rs = null;
@@ -73,6 +74,7 @@ public class mainPro {
 				//获取网页的连接
 				httpGet.getByString(url,conn);
 				count++;
+				System.out.println(count);
 				
 				//set boolean value "crawled" to true after crawling this page
 				sql = "UPDATE record SET crawled = 1 WHERE URL = '" + url + "'";
@@ -95,6 +97,10 @@ public class mainPro {
 						break;
 					}
 				}
+			}
+			//将url存到数据库中，以实现断点续传
+			if(torrentLink.setTorrent(url)) {
+				System.out.println("url存入成功！");
 			}
 			conn.close();
 			conn = null;
