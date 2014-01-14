@@ -17,6 +17,7 @@ public class parsePage {
 	public static void parseFromString(String content, Connection conn, String url) throws Exception {
 		Parser parser = new Parser(content);
 		HasAttributeFilter filter = new HasAttributeFilter("href");
+		getPageContent getpagecontent = new getPageContent();
 		
 		try{
 			String sql = null;
@@ -25,9 +26,16 @@ public class parsePage {
 			Statement stmt = null;
 			//将页面的内容存入数据库
 			try {
-				sql = "INSERT INTO webcontent (URL2, webContent) VALUES ('"+url+"', '"+content+"')";
+				
+				String temp = getpagecontent.getText(url);
+				String temp2 = getpagecontent.getTitle(url);
+			//	temp = URLDecoder.decode(temp, "UTF-8");
+				sql = "INSERT INTO webcontent (URL2, webTitle, webContent) VALUES ('"+url+"', '"+temp2+"', '"+temp+"')";
 				pstmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 				pstmt.execute();
+//				sql = "INSERT INTO webcontent (URL2, webContent) VALUES ('"+url+"', '"+temp+"')";
+//				pstmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+//				pstmt.execute();
 			}catch(Exception e) {
 				e.printStackTrace();
 			}

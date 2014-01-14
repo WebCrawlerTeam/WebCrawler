@@ -41,7 +41,7 @@ public class mainPro {
         int count = 0;
 		if(conn != null) {
 			try{
-				sql = "CREATE DATABASE IF NOT EXISTS crawler";
+				sql = "CREATE DATABASE IF NOT EXISTS crawler DEFAULT CHARSET=utf8;";
 				stmt = conn.createStatement();
 				stmt.executeUpdate(sql);
 				
@@ -53,7 +53,7 @@ public class mainPro {
 				stmt = conn.createStatement();
 				stmt.executeUpdate(sql);
 				
-				sql = "create table if not exists webcontent (contentID int(5) not null auto_increment, URL2 text not null, webContent text, primary key (contentID)) engine=InnoDB DEFAULT CHARSET=utf8";
+				sql = "create table if not exists webcontent (contentID int(5) not null auto_increment, URL2 text not null, webTitle text, webContent text, primary key (contentID)) engine=InnoDB DEFAULT CHARSET=utf8";
 				stmt = conn.createStatement();
 				stmt.executeUpdate(sql);
 				
