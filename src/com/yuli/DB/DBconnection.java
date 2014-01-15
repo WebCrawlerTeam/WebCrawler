@@ -32,7 +32,7 @@ public class DBconnection {
 			conn = DriverManager.getConnection(dburl, utils.USER, utils.PASSWORD);
 			
 			if(!conn.isClosed()) {
-				System.out.println("数据库连接成功！");
+//				System.out.println("数据库连接成功！");
 			}
 			else {
 				System.out.println("数据库连接失败！");
@@ -44,8 +44,9 @@ public class DBconnection {
 	public void DBcreate() {
 		//创建数据库，完成初始化
 				String sql = null;
-//		        String url = frontpage;
-				String url = torrentLink.getTorrent();
+				String frontpage = utils.URLS;
+		        String url = frontpage;
+//				String url = torrentLink.getTorrent();
 		        
 		        int count = 0;
 				if(conn != null) {
@@ -70,7 +71,7 @@ public class DBconnection {
 						stmt = conn.createStatement();
 						stmt.executeUpdate(sql);
 						
-						sql = "INSERT INTO record (URL, crawled) VALUES ('" + url + "',0)";
+						sql = "INSERT INTO record (URL, crawled) VALUES ('" + frontpage + "',0)";
 		    			pstmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 		    			pstmt.execute();
 					}catch(Exception e) {
@@ -87,7 +88,7 @@ public class DBconnection {
 			stmt = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,ResultSet.CONCUR_UPDATABLE);
 			rs = stmt.executeQuery(sql);
 			if(rs.next()) {
-				System.out.println("非空！");
+//				System.out.println("非空！");
 			}
 			arr = (ArrayList<resultBean>) resultToList.rtl(rs);
 			for(int i=0;i<arr.size();i++) {

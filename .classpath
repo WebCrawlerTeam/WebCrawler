@@ -8,5 +8,7 @@
 	<classpathentry kind="lib" path="/home/yuli/git/WebCrawler/lib/httpclient-4.3.1.jar"/>
 	<classpathentry kind="lib" path="/home/yuli/git/WebCrawler/lib/httpcore-4.3.jar"/>
 	<classpathentry kind="lib" path="/home/yuli/git/WebCrawler/lib/mysql-connector-java-5.1.22-bin.jar"/>
+	<classpathentry kind="lib" path="/home/yuli/git/WebCrawler/lib/IKAnalyzer2012.jar"/>
+	<classpathentry kind="lib" path="/home/yuli/git/WebCrawler/lib/lucene-core-3.6.0.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

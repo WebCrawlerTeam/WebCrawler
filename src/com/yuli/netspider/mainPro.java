@@ -6,10 +6,12 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 
-public class mainPro {
+public class mainPro extends Thread{
 
 	
-	public static void main(String[] args) throws Exception{
+//	public static void main(String[] args) throws Exception{
+	public void run(){
+		
 		// TODO Auto-generated method stub
 		//连接数据库
 		String frontpage = utils.URLS;
@@ -34,8 +36,9 @@ public class mainPro {
 		
 		//创建数据库，完成初始化
 		String sql = null;
-//        String url = frontpage;
-		String url = torrentLink.getTorrent();
+        String url = frontpage;
+//		String url = utils.URLS;
+//		String url = torrentLink.getTorrent();
         Statement stmt = null;
         PreparedStatement pstmt = null;
         ResultSet rs = null;
@@ -68,46 +71,49 @@ public class mainPro {
 			}catch(Exception e) {
 				e.printStackTrace();
 			}
-			
+		}
 			//开始爬
+		System.out.println("服务已经开启");
 			while(true) {
 				//获取网页的连接
-				httpGet.getByString(url,conn);
-				count++;
-				System.out.println(count);
-				
-				//set boolean value "crawled" to true after crawling this page
-				sql = "UPDATE record SET crawled = 1 WHERE URL = '" + url + "'";
-				stmt = conn.createStatement();
-				
-				if(stmt.executeUpdate(sql)>0) {
-					//获取下一个页面
-					sql = "SELECT * FROM record WHERE crawled = 0";
-					stmt = conn.createStatement();
-					rs = stmt.executeQuery(sql);
-					if(rs.next()) {
-						url = rs.getString(2);
-					}else {
-						//如果到达表尾，则停止爬
-						break;
-					}
+				try{
+					httpGet.getByString(url,conn);
+					count++;
+//					System.out.println(count);
 					
-					//设置爬取的数量限制
-					if(count>1000 || url == null) {
-						break;
-					}
+					//set boolean value "crawled" to true after crawling this page
+					sql = "UPDATE record SET crawled = 1 WHERE URL = '" + url + "'";
+					stmt = conn.createStatement();
+					
+					if(stmt.executeUpdate(sql)>0) {
+						//获取下一个页面
+						sql = "SELECT * FROM record WHERE crawled = 0";
+						stmt = conn.createStatement();
+						rs = stmt.executeQuery(sql);
+						if(rs.next()) {
+							url = rs.getString(2);
+						}else {
+							//如果到达表尾，则停止爬
+							break;
+						}
+						//设置爬取的数量限制
+						if(count>1000 || url == null) {
+							break;
+						}
+				    }
+					conn.close();
+					conn = null;
+				}catch(Exception e) {
+					e.printStackTrace();
 				}
-			}
 			//将url存到数据库中，以实现断点续传
-			if(torrentLink.setTorrent(url)) {
-				System.out.println("url存入成功！");
+//			if(torrentLink.setTorrent(url)) {
+//				System.out.println("url存入成功！");
+//			}
 			}
-			conn.close();
-			conn = null;
-			
 			System.out.println("完成");
 			System.out.println("爬取的网页数量: "+(count-1));
-		}
+		
 	}
 
 }

@@ -18,7 +18,7 @@ public class httpGet {
 		
 		try{
 			HttpGet httpget = new HttpGet(url);
-			System.out.println("已得到反馈！"+ httpget.getURI());
+//			System.out.println("已得到反馈！"+ httpget.getURI());
 			
 			ResponseHandler<String> responseHandler = new ResponseHandler<String>() {
 

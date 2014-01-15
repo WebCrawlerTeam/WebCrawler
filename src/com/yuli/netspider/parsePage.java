@@ -62,7 +62,7 @@ public class parsePage {
 								sql = "INSERT INTO record (URL, crawled) VALUES ('" + nextlink + "',0)";
 								pstmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 								pstmt.execute();
-								System.out.println(nextlink);
+//								System.out.println(nextlink);
 								
 								//将页面的内容存入数据库
 								try {
