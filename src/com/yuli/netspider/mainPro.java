@@ -4,17 +4,21 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 
 public class mainPro extends Thread{
-
+	private String url;
+	public mainPro(String url){
+		this.url = url;
+	}
 	
 //	public static void main(String[] args) throws Exception{
 	public void run(){
 		
 		// TODO Auto-generated method stub
 		//连接数据库
-		String frontpage = utils.URLS;
+		String frontpage = url;
 		Connection conn = null;
 		
         
@@ -36,7 +40,7 @@ public class mainPro extends Thread{
 		
 		//创建数据库，完成初始化
 		String sql = null;
-        String url = frontpage;
+//        String url = frontpage;
 //		String url = utils.URLS;
 //		String url = torrentLink.getTorrent();
         Statement stmt = null;
@@ -53,15 +57,15 @@ public class mainPro extends Thread{
 				stmt = conn.createStatement();
 				stmt.executeUpdate(sql);
 				
-				sql = "create table if not exists record (recordID int(5) not null auto_increment, URL text not null, crawled tinyint(1) not null, primary key (recordID)) engine=InnoDB DEFAULT CHARSET=utf8";
+				sql = "create table if not exists record (recordID int(11) not null auto_increment, URL text not null, crawled tinyint(1) not null, primary key (recordID)) engine=InnoDB DEFAULT CHARSET=utf8";
 				stmt = conn.createStatement();
 				stmt.executeUpdate(sql);
 				
-				sql = "create table if not exists webcontent (contentID int(5) not null auto_increment, URL2 text not null, webTitle text, webContent text, primary key (contentID)) engine=InnoDB DEFAULT CHARSET=utf8";
+				sql = "create table if not exists webcontent (contentID int(11) not null auto_increment, URL2 text not null, webTitle text, webContent text, primary key (contentID)) engine=InnoDB DEFAULT CHARSET=utf8";
 				stmt = conn.createStatement();
 				stmt.executeUpdate(sql);
 				
-				sql = "create table if not exists tags (tagnum int(4) not null auto_increment, tagname text not null, primary key (tagnum)) engine=InnoDB DEFAULT CHARSET=utf8";
+				sql = "create table if not exists tags (tagnum int(11) not null auto_increment, tagname text not null, primary key (tagnum)) engine=InnoDB DEFAULT CHARSET=utf8";
 				stmt = conn.createStatement();
 				stmt.executeUpdate(sql);
 				
@@ -79,7 +83,7 @@ public class mainPro extends Thread{
 				try{
 					httpGet.getByString(url,conn);
 					count++;
-//					System.out.println(count);
+					System.out.println(count);
 					
 					//set boolean value "crawled" to true after crawling this page
 					sql = "UPDATE record SET crawled = 1 WHERE URL = '" + url + "'";
@@ -101,16 +105,19 @@ public class mainPro extends Thread{
 							break;
 						}
 				    }
-					conn.close();
-					conn = null;
+					
 				}catch(Exception e) {
 					e.printStackTrace();
 				}
 			//将url存到数据库中，以实现断点续传
-//			if(torrentLink.setTorrent(url)) {
-//				System.out.println("url存入成功！");
-//			}
 			}
+			try {
+				conn.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			conn = null;
 			System.out.println("完成");
 			System.out.println("爬取的网页数量: "+(count-1));
 		

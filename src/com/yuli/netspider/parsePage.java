@@ -1,6 +1,5 @@
 package com.yuli.netspider;
 
-import java.net.URLDecoder;
 import java.sql.PreparedStatement;
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -16,6 +15,7 @@ import org.htmlparser.util.ParserException;
 public class parsePage {
 	public static void parseFromString(String content, Connection conn, String url) throws Exception {
 		Parser parser = new Parser(content);
+		parser.setEncoding("UTF-8");
 		HasAttributeFilter filter = new HasAttributeFilter("href");
 		getPageContent getpagecontent = new getPageContent();
 		
@@ -35,7 +35,7 @@ public class parsePage {
 				if(node instanceof LinkTag) {
 					LinkTag link = (LinkTag)node;
 					String nextlink = link.extractLink();
-					String mainurl = utils.URLS;
+//					String mainurl = utils.URLS;
 				//	String wpurl = mainurl + "wp-content/";
 					
 					//仅仅保存页面从mainurl
@@ -52,7 +52,8 @@ public class parsePage {
 						try{
 							//检查连接是否已经存在数据库中
 							sql = "SELECT * FROM record WHERE URL = '" + nextlink + "'";
-							stmt = conn.createStatement(ResultSet.TYPE_FORWARD_ONLY,ResultSet.CONCUR_UPDATABLE);
+							stmt = conn.createStatement();
+//							stmt = conn.createStatement(ResultSet.TYPE_FORWARD_ONLY,ResultSet.CONCUR_UPDATABLE);
 							rs = stmt.executeQuery(sql);
 							
 							if(rs.next()) {
@@ -62,7 +63,7 @@ public class parsePage {
 								sql = "INSERT INTO record (URL, crawled) VALUES ('" + nextlink + "',0)";
 								pstmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 								pstmt.execute();
-//								System.out.println(nextlink);
+								System.out.println(nextlink);
 								
 								//将页面的内容存入数据库
 								try {
@@ -70,6 +71,16 @@ public class parsePage {
 									String temp = getpagecontent.getText(nextlink);
 									String temp2 = getpagecontent.getTitle(nextlink);
 								//	temp = URLDecoder.decode(temp, "UTF-8");
+									//判断字符串中是否含有单引号
+									if(nextlink.indexOf("'")>-1){
+										nextlink = nextlink.replace("\\'", "\\\\'");
+									}
+									if(temp.indexOf("'")>-1){
+										temp = nextlink.replace("\\'", "\\\\'");
+									}
+									if(temp2.indexOf("'")>-1){
+										temp2 = nextlink.replace("\\'", "\\\\'");
+									}
 									sql = "INSERT INTO webcontent (URL2, webTitle, webContent) VALUES ('"+nextlink+"', '"+temp2+"', '"+temp+"')";
 //									pstmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 //									pstmt.execute();

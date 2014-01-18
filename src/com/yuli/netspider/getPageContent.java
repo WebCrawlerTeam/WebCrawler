@@ -26,15 +26,17 @@ public class getPageContent {
 	
 	public String getTitle(String url) throws ParserException {
 		String tmp=null;
-		Parser parser = new Parser(url);
+		Parser parser = null;
+		try{
+			parser = new Parser(url);
+			parser.setEncoding("UTF-8");
+		}catch(Exception e) {
+//			parser = new Parser(url);
+//			parser.setEncoding("gb2312");
+			e.printStackTrace();
+		}
 		TagNameFilter filter = new TagNameFilter("title");
 		NodeList nl =parser.extractAllNodesThatMatch(filter);
-//		for(int i =0;i <nl.size();i++){
-//		   tmp = nl.elementAt(i).toPlainTextString();
-//		   System.out.println(tmp);
-//		   }
-//		System.out.println(nl.elementAt(0).toPlainTextString());
-//		System.out.println(nl.size());
 		return nl.elementAt(0).toPlainTextString();
 	}
 }
